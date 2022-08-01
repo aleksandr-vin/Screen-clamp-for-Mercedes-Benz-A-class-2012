@@ -11,7 +11,7 @@ clamp_opennes = .90;
 clamp_opennes_h = .80;
 
 panel_roundness = 6;
-panel_w = 45-clamp_w;
+panel_w = 38-clamp_w;
 panel_h = 65;
 
 top_r = panel_h/4;
@@ -22,7 +22,7 @@ qlock_clamp_d = 5;
 
 conn_pin_r = 10;
 conn_place_h = 10;
-conn_place_w = 58;
+conn_place_w = 53;
 
 clamp_thickness = 2;
 panel_thickness = 5;
@@ -139,7 +139,7 @@ module slip() {
 }
 
 module slip2() {
-    translate([-225,-50,-56]) rotate([0,35,0]) cube(100);
+    translate([-218.2,-73.5,-56]) rotate([0,35,0]) cube(100);
 }
 
 module slip3() {
