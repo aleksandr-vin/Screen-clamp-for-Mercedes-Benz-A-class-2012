@@ -1,5 +1,13 @@
 # Screen clamp for Mercedes-Benz A class 2012
 
+## Version 5
+
+With a hook on the top right corner of the clamp to assist the removing of it.
+
+Panel is made narrower as space allows.
+
+## Version 4
+
 ## Version 3 (broken)
 
 Panel is widened and thickened to remove twisting. Connecting panel and left side of

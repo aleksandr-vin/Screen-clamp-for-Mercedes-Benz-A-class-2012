@@ -48,6 +48,11 @@ module clamp() union() {
     translate([-(screen_mount_w+clamp_w)/2, (screen_mount_h*clamp_opennes_h)/2,0]) circle(d = clamp_w);
     
     translate([clamp_w, screen_mount_h/2+clamp_w+5/2,0]) offset(r = clamp_w) square([screen_mount_w+clamp_w*2, 5], center = true);
+
+    translate([-screen_mount_w/2-clamp_w,screen_mount_h/2+2*clamp_w + 5,0]) difference() {
+        circle(15);
+        circle(10);
+    }
 }
 
 module holes() {
