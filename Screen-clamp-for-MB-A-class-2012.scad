@@ -29,6 +29,8 @@ panel_thickness = 5;
 
 nut_h = 5;
 nut_space = 3;
+nut_dia = 9.2;
+nut_bolt_dia = 5;
 
 module screen_place() {
     square([screen_mount_w, screen_mount_h], center = true);
@@ -107,16 +109,19 @@ module conn_base() {
 }
 
 module nut() {
-    dd = 9.2;
     polygon([for (i = [0 : 60 : 360] )
-        [sin(i) * dd/2, cos(i) * dd/2]
+        [sin(i) * nut_dia/2, cos(i) * nut_dia/2]
     ]);
 }
 
 module nut_space() {
-    translate([0,0,-50])linear_extrude(height=100) circle(d = 5);
+    translate([0,0,-50])linear_extrude(height=100) circle(d = nut_bolt_dia);
 
-    translate([0,0,-nut_h+clamp_thickness]) linear_extrude(height=nut_h+clamp_thickness) nut();
+    union() {
+        cyl_h = 1;
+        translate([0,0,-nut_h+clamp_thickness]) linear_extrude(height=nut_h-cyl_h+clamp_thickness) nut();
+        translate([0,0,-nut_h+clamp_thickness/2]) cylinder(h=cyl_h, d1=nut_bolt_dia, d2=nut_dia, center = false);
+    }
 }
 
 module conn() {
@@ -129,17 +134,42 @@ module conn() {
     }
 }
 
-rotate([0,180,0])
-difference() {
-union() {
-    linear_extrude(height=clamp_thickness) {
-        clamp();
-        //top_transition();
-        //bottom_transition();
-    }
-    translate([0,0,-panel_thickness]) linear_extrude(height=panel_thickness+clamp_thickness) panel();
-
-    translate([screen_mount_w/2 - conn_pin_r +conn_place_w, screen_mount_h/2+conn_place_h,0]) conn();
+module slip() {
+    translate([-160,26,-46]) rotate([5,15,0]) cube(50);
 }
-translate([screen_mount_w/2 - conn_pin_r + conn_place_w, screen_mount_h/2+conn_place_h,0]) nut_space();
+
+module slip2() {
+    translate([-225,-50,-56]) rotate([0,35,0]) cube(100);
+}
+
+module slip3() {
+    translate([-screen_mount_w/2-clamp_w-100,-113.5,-60]) rotate([35,0,0]) cube(100);
+}
+
+module main() {
+    difference() {
+        rotate([0,180,0]) difference() {
+            union() {
+                linear_extrude(height=clamp_thickness) {
+                    clamp();
+                    //top_transition();
+                    //bottom_transition();
+                }
+                translate([0,0,-panel_thickness]) linear_extrude(height=panel_thickness+clamp_thickness) panel();
+
+                translate([screen_mount_w/2 - conn_pin_r +conn_place_w, screen_mount_h/2+conn_place_h,0]) conn();
+            }
+            translate([screen_mount_w/2 - conn_pin_r + conn_place_w, screen_mount_h/2+conn_place_h,0]) nut_space();
+        }
+
+        slip();
+        slip2();
+        slip3();
+    }
+}
+
+difference() {
+    main();
+    
+    // translate([-150,36,-10]) cube(100); // to check nut cut internals: get this diff
 }
