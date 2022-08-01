@@ -7,7 +7,8 @@ screen_mount_w = 145;
 screen_mount_h = 53.5;
 
 clamp_w = 6;
-clamp_opennes = .95;
+clamp_opennes = .90;
+clamp_opennes_h = .80;
 
 panel_roundness = 6;
 panel_w = 45-clamp_w;
@@ -38,11 +39,13 @@ module clamp() union() {
         offset(r = clamp_w) square([screen_mount_w, screen_mount_h], center = true);
         screen_place();
         translate([0,-screen_mount_h/2,0]) square([screen_mount_w * clamp_opennes, screen_mount_h], center = true);
+        translate([-screen_mount_w/2,0,0]) square([screen_mount_w, screen_mount_h * clamp_opennes_h], center = true);
+        translate([-screen_mount_w/2,-screen_mount_h/2,0]) screen_place();
     }
     translate([screen_mount_w*clamp_opennes/2, -(screen_mount_h+clamp_w)/2,0]) circle(d = clamp_w);
-    translate([-screen_mount_w*clamp_opennes/2, -(screen_mount_h+clamp_w)/2,0]) circle(d = clamp_w);
+    translate([-(screen_mount_w+clamp_w)/2, (screen_mount_h*clamp_opennes_h)/2,0]) circle(d = clamp_w);
     
-    translate([clamp_w, screen_mount_h/2+clamp_w+5/2,0]) offset(r = clamp_w) square([screen_mount_w, 5], center = true);
+    translate([clamp_w, screen_mount_h/2+clamp_w+5/2,0]) offset(r = clamp_w) square([screen_mount_w+clamp_w*2, 5], center = true);
 }
 
 module holes() {
