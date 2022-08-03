@@ -26,14 +26,20 @@ conn_place_w = 53;
 
 clamp_thickness = 2;
 panel_thickness = 5;
+top_bar_thickness = 5;
 
 nut_h = 5;
 nut_space = 3;
-nut_dia = 9.2;
+nut_dia = 9.3;
 nut_bolt_dia = 5;
 
 module screen_place() {
     square([screen_mount_w, screen_mount_h], center = true);
+}
+
+module top_bar() {
+    translate([clamp_w, screen_mount_h/2+clamp_w+5/2+2,0]) offset(r = clamp_w)
+        square([screen_mount_w+clamp_w*2+10, 1], center = true);
 }
 
 module clamp() union() {
@@ -47,7 +53,7 @@ module clamp() union() {
     translate([screen_mount_w*clamp_opennes/2, -(screen_mount_h+clamp_w)/2,0]) circle(d = clamp_w);
     translate([-(screen_mount_w+clamp_w)/2, (screen_mount_h*clamp_opennes_h)/2,0]) circle(d = clamp_w);
     
-    translate([clamp_w, screen_mount_h/2+clamp_w+5/2,0]) offset(r = clamp_w) square([screen_mount_w+clamp_w*2, 5], center = true);
+    translate([clamp_w, screen_mount_h/2+clamp_w+5/2,0]) offset(r = clamp_w) square([screen_mount_w+clamp_w*2+10, 5], center = true);
 
     translate([-screen_mount_w/2-clamp_w,screen_mount_h/2+2*clamp_w + 5,0]) difference() {
         circle(15);
@@ -82,6 +88,14 @@ module panel_old() {
 module panel() {
     difference() {
         translate([screen_mount_w/2  + panel_roundness + clamp_w, -screen_mount_h/2,0]) offset(r = panel_roundness) square([panel_w,panel_h], center = false);
+    }
+}
+
+module panel_strengther() {
+    cut_h=3;
+    translate([-screen_mount_w/2-panel_w/2-12,10,-panel_w*5/2+cut_h+panel_thickness]) difference() {
+        sphere(d = panel_w*5);
+        translate([0,0,-cut_h]) cube(panel_w*5, center=true);
     }
 }
 
@@ -160,6 +174,7 @@ module main() {
                     //top_transition();
                     //bottom_transition();
                 }
+                translate([0,0,-top_bar_thickness]) linear_extrude(height=top_bar_thickness) top_bar();
                 translate([0,0,-panel_thickness]) linear_extrude(height=panel_thickness+clamp_thickness) panel();
 
                 translate([screen_mount_w/2 - conn_pin_r +conn_place_w, screen_mount_h/2+conn_place_h,0]) conn();
@@ -171,6 +186,7 @@ module main() {
         slip2();
         slip3();
     }
+    panel_strengther();
 }
 
 difference() {

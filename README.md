@@ -1,5 +1,10 @@
 # Screen clamp for Mercedes-Benz A class 2012
 
+## Version 6
+
+Added strength element for panel and top of the clamp. As version 5 melted while being whole
+day under sun.
+
 ## Version 5
 
 With a hook on the top right corner of the clamp to assist the removing of it.
